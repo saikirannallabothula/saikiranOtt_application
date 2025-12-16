@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - StreamFlix</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+
+<body class="auth-page">
+    <div class="auth-container">
+        <div class="logo">StreamFlix</div>
+        <div class="auth-box">
+            <h2>Register</h2>
+            <form id="register-form">
+                <div class="input-group">
+                    <input type="text" id="name" required placeholder="Full Name">
+                </div>
+                <div class="input-group">
+                    <input type="email" id="email" required placeholder="Email address">
+                </div>
+                <div class="input-group">
+                    <input type="password" id="password" required placeholder="Password">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+            </form>
+            <div class="auth-footer">
+                <p>Already have an account? <a href="login.html">Sign in</a>.</p>
+            </div>
+            <div id="error-message" class="error-message"></div>
+        </div>
+    </div>
+
+    <script src="assets/js/auth.js"></script>
+    <script>
+        document.getElementById('register-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            const result = registerUser(name, email, password);
+            if (result.success) {
+                window.location.href = 'index.html';
+            } else {
+                document.getElementById('error-message').innerText = result.message;
+            }
+        });
+    </script>
+</body>
+
+</html>

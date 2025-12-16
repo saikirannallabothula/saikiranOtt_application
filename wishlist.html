@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My List - StreamFlix</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        .list-container {
+            padding: 100px 4%;
+        }
+
+        .grid-layout {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .grid-item {
+            position: relative;
+            transition: transform 0.3s;
+        }
+
+        .grid-item:hover {
+            transform: scale(1.05);
+            z-index: 10;
+        }
+
+        .grid-item img {
+            width: 100%;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: var(--gray-text);
+            margin-top: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar scrolled">
+        <div class="logo"><a href="index.html">StreamFlix</a></div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="wishlist.html" class="active">My List</a></li>
+        </ul>
+        <div class="user-actions" id="auth-buttons">
+            <!-- Injected by auth.js -->
+        </div>
+    </nav>
+
+    <div class="list-container">
+        <h1>My List</h1>
+        <div id="wishlist-grid" class="grid-layout">
+            <!-- Filled by JS -->
+        </div>
+        <div id="empty-msg" class="empty-state" style="display: none;">
+            <h2>Your list is empty</h2>
+            <p>Add shows and movies to your list to watch them later.</p>
+        </div>
+    </div>
+
+    <script src="assets/js/auth.js"></script>
+    <script>
+        checkAuthState();
+        const user = getCurrentUser();
+
+        if (!user) {
+            window.location.href = 'login.html';
+        }
+
+        const wishlistGrid = document.getElementById('wishlist-grid');
+        const emptyMsg = document.getElementById('empty-msg');
+
+        // Note: In a real app we would store movie IDs and fetch details, 
+        // OR store the minimal movie object in the wishlist array.
+        // For simplicity let's assume we store the movie objects in local storage.
+
+        const wishlist = user.wishlist || [];
+
+        if (wishlist.length === 0) {
+            emptyMsg.style.display = 'block';
+        } else {
+            wishlist.forEach(movie => {
+                const div = document.createElement('div');
+                div.className = 'grid-item';
+                div.innerHTML = `
+                    <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title || movie.name}">
+                `;
+                wishlistGrid.appendChild(div);
+            });
+        }
+    </script>
+</body>
+
+</html>
